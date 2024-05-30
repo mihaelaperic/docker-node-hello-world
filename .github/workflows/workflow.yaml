@@ -1,3 +1,4 @@
+
 name: cicd-demo
 on:
   push:
@@ -15,7 +16,7 @@ jobs:
   build-job:
     name: Build Job
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: "Start build job"
         run: |
@@ -26,7 +27,7 @@ jobs:
         uses: oracle-actions/get-ocir-repository@v1.2.1
         id: get-ocir-repository
         with:
-          name: "novirepo/mojrepo"
+          name: "docker-node-hello-world "
           compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
       - name: Log into OCIR
         uses: oracle-actions/login-ocir@v1.2.1
@@ -59,25 +60,27 @@ jobs:
       - name: docker build
         id: docker-build
         run: |
-          docker build -t fra.ocir.io/frbclquc7alv/novirepo/mojrepo .
+          docker build -t fra.ocir.io/frazjikiagro/novirepo/mojrepo .
       - name: docker push
         id: docker-push
         run: |
-          docker push fra.ocir.io/frbclquc7alv/novirepo/mojrepo:latest
+          docker push fra.ocir.io/frazjikiagro/novirepo/mojrepo:latest
   deploy-job:
     needs: build-job
     runs-on: ubuntu-latest
     steps:
-      - name: "Start deploy job"
-        run: |
-          echo "Starting the deploy job."
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Configure Kubectl
-        uses: oracle-actions/configure-kubectl-oke@v1.3.2
-        id: kubectl-oke-action
-        with:
-          cluster: ${{ secrets.OKE_CLUSTER_OCID }}
-      - name: Run Kubectl
-        run: kubectl apply -f sbio-hello-app.yaml
+    -  name: "Start deploy job"
+       run: | 
+         echo "Starting the deploy job."
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure Kubectl
+      uses: oracle-actions/configure-kubectl-oke@v1.3.2
+      id: kubectl-oke-action
+      with:
+        cluster: ${{ secrets.OKE_CLUSTER_OCID }}
+    - name: Run Kubectl 
+      run: kubectl apply -f sbio-hello-app.yaml
+
+
