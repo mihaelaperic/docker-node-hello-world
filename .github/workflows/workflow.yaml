@@ -34,29 +34,10 @@ jobs:
         id: login-ocir
         with:
           auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
-      - name: "Setup Java"
-        uses: actions/setup-java@v4
-        with:
-          distribution: oracle
-          java-version: 17
-      - name: 'Check Java Version'
+      - name: Install npm
+        id: node-install
         run: |
-          java --version
-      - name: 'Assemble JAR'
-        run: |
-          mvn package
-      - name: 'Get Version Number'
-        run: |
-          echo "VERSION=$(mvn --version | grep "Apache Maven" | awk '{print $3}')" >> $GITHUB_ENV
-      - name: 'Test'
-        run: |
-          echo $GITHUB_ENV
-          echo ${{env.VERSION}}
-      - name: 'Publish JAR'
-        uses: actions/upload-artifact@v4.3.3
-        with:
-          name: 'cicd-demo-${{env.VERSION}}-SNAPSHOT.jar'
-          path: target/*-SNAPSHOT.jar
+          apt install nodejs 
       - name: docker build
         id: docker-build
         run: |
