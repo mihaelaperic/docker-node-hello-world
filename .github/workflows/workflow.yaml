@@ -27,7 +27,7 @@ jobs:
         uses: oracle-actions/get-ocir-repository@v1.2.1
         id: get-ocir-repository
         with:
-          name: "docker-node-hello-world "
+          name: "node-js/new-repo-lab"
           compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
       - name: Log into OCIR
         uses: oracle-actions/login-ocir@v1.2.1
@@ -60,11 +60,11 @@ jobs:
       - name: docker build
         id: docker-build
         run: |
-          docker build -t fra.ocir.io/frazjikiagro/novirepo/mojrepo .
+          docker build -t fra.ocir.io/frbclquc7alv/node-js/new-repo-lab:latest .
       - name: docker push
         id: docker-push
         run: |
-          docker push fra.ocir.io/frazjikiagro/novirepo/mojrepo:latest
+          docker push fra.ocir.io/frbclquc7alv/node-js/new-repo-lab:latest
   deploy-job:
     needs: build-job
     runs-on: ubuntu-latest
@@ -81,6 +81,6 @@ jobs:
       with:
         cluster: ${{ secrets.OKE_CLUSTER_OCID }}
     - name: Run Kubectl 
-      run: kubectl apply -f sbio-hello-app.yaml
+      run: kubectl apply -f node-js.yaml
 
 

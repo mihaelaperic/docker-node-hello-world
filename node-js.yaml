@@ -1,32 +1,32 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sbapp
+  name: napp
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: sbapp
+      app: napp
   template:
     metadata:
       labels:
-        app: sbapp
+        app: napp
     spec:
       containers:
-      - name: sbapp
+      - name: napp
         image: fra.ocir.io/frbclquc7alv/node-js/new-repo-lab:latest
         imagePullPolicy: Always
         ports:
-        - name: sbapp
+        - name: napp
           containerPort: 8080
           protocol: TCP
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: sbapp-lb
+  name: napp-lb
   labels:
-    app: sbapp
+    app: napp
   annotations:
     service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"
     service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"
@@ -36,5 +36,5 @@ spec:
   ports:
   - port: 8080
   selector:
-    app: sbapp
+    app: napp
 
