@@ -34,10 +34,6 @@ jobs:
         id: login-ocir
         with:
           auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
-      - name: Install npm
-        id: node-install
-        run: |
-          apt install nodejs 
       - name: docker build
         id: docker-build
         run: |
